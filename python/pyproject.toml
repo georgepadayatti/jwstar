@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "python"
+version = "0.1.0"
+description = ""
+authors = ["George J Padayatti <george.padayatti@igrant.io>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+cryptography = "^41.0.7"
+jwcrypto = "^1.5.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
