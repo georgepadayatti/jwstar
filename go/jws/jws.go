@@ -1,6 +1,7 @@
 package jws
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/georgepadayatti/jwstar/go/jwk"
@@ -24,7 +25,9 @@ func (obj *JWS) Generate() error {
 	signer, err := jose.NewSigner(jose.SigningKey{
 		Algorithm: jose.ES256,
 		Key:       privateKey,
-	}, nil)
+	}, &jose.SignerOptions{
+		ExtraHeaders: map[jose.HeaderKey]interface{}{"jwk": jwk.FromJSON(jwkString), "typ": "JWT"},
+	})
 	if err != nil {
 		return err
 	}
@@ -38,9 +41,14 @@ func (obj *JWS) Generate() error {
 	if err != nil {
 		return err
 	}
+
+	res, err := json.Marshal(map[string]string{"jwk": jwkString, "jws": jwsString})
+	if err != nil {
+		return err
+	}
+
 	// Print public key JWK and JWS to terminal
-	fmt.Printf("Public key JWK: \n\n%v\n\n", jwkString)
-	fmt.Printf("JWS: \n\n%v\n", jwsString)
+	fmt.Println(string(res))
 
 	return nil
 }
@@ -60,8 +68,7 @@ func (obj *JWS) Verify() error {
 		return err
 	}
 	// Print decoded payload
-	fmt.Println("Signature verified.")
-	fmt.Printf("\nPayload: \n\n%v\n", string(payload))
+	fmt.Println(string(payload))
 
 	return nil
 }

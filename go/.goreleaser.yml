@@ -1,0 +1,32 @@
+builds:
+  - binary: jwstar
+    goos:
+      - darwin
+      - linux
+    goarch:
+      - amd64
+      - arm64
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -mod=vendor
+
+release:
+  prerelease: auto
+
+universal_binaries:
+  - replace: true
+
+brews:
+  -
+    name: jwstar
+    homepage: "https://github.com/georgepadayatti/jwstar"
+    tap:
+      owner: georgepadayatti
+      name: homebrew-tap
+    commit_author:
+      name: georgepadayatti
+      email: george.padayatti@igrant.io
+
+checksum:
+  name_template: 'checksums.txt'

@@ -1,24 +1,23 @@
 package cmd
 
 import (
+	"fmt"
 	"log"
 
-	"github.com/georgepadayatti/jwstar/go/jwk"
-	"github.com/georgepadayatti/jwstar/go/jws"
+	"github.com/georgepadayatti/jwstar/go/did"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-// verifyJWSConfig structure to hold the configuration values
-type verifyJWSConfig struct {
-	JWS string `mapstructure:"jws"`
-	JWK string `mapstructure:"jwk"`
+// decodeDIDToJWKConfig structure to hold the configuration values
+type decodeDIDToJWKConfig struct {
+	DID string `mapstructure:"did"`
 }
 
-func verifyJWSCmd() *cobra.Command {
+func decodeDIDToJWKCmd() *cobra.Command {
 	var verifyJWSCmd = &cobra.Command{
-		Use:   "verify-jws",
-		Short: "Verify JWS",
+		Use:   "decode-did",
+		Short: "Decode DID",
 		Args:  cobra.ExactArgs(0),
 		Run: func(cmd *cobra.Command, args []string) {
 
@@ -31,18 +30,19 @@ func verifyJWSCmd() *cobra.Command {
 			}
 
 			// Initialize a Config structure to hold the configuration values
-			var config verifyJWSConfig
+			var config decodeDIDToJWKConfig
 
 			// Unmarshal the configuration into the Config structure
 			if err := viper.Unmarshal(&config); err != nil {
 				log.Fatalf("Error unmarshalling config: %s\n", err)
 			}
 
-			jwsObj := jws.JWS{Key: jwk.FromJSON(config.JWK), Signature: config.JWS}
-			err := jwsObj.Verify()
-			if err != nil {
-				log.Fatalf("Error occured while verifying JWS: %v", err)
+			var didkey did.DIDKey
+			if err := didkey.DecodeToBytes(config.DID); err != nil {
+				log.Fatalf("Error decoding did:key to bytes: %s\n", err)
 			}
+
+			fmt.Println(didkey.ToJSON())
 		},
 	}
 

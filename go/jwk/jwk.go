@@ -45,7 +45,7 @@ func (obj *JWK) GenerateECKey() *ecdsa.PrivateKey {
 // ToJSON to json string
 func (obj *JWK) ToJSON() string {
 	jwk := obj.FromECPublicKey(obj.PublicKey)
-	jwkJSON, err := json.MarshalIndent(jwk, "", "  ")
+	jwkJSON, err := json.Marshal(jwk)
 	if err != nil {
 		log.Fatalf("Error marshaling JWK to JSON: %v", err)
 	}

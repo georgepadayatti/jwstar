@@ -16,4 +16,5 @@ func Execute() error {
 func init() {
 	rootCmd.AddCommand(generateJWSCmd())
 	rootCmd.AddCommand(verifyJWSCmd())
+	rootCmd.AddCommand(decodeDIDToJWKCmd())
 }
