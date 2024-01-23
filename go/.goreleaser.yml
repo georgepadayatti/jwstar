@@ -23,7 +23,7 @@ brews:
     homepage: "https://github.com/georgepadayatti/jwstar"
     tap:
       owner: georgepadayatti
-      name: homebrew-tap
+      name: homebrew-padayatti
     commit_author:
       name: georgepadayatti
       email: george.padayatti@igrant.io
